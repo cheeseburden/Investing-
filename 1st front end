@@ -1,0 +1,336 @@
+#HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Chatbot</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">ChatBot AI</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+      <button id="start-chat" class="btn-primary">Start Chat</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Modern AI Assistance</h1>
+        <p>Your AI companion for smarter, faster, and more seamless communication.</p>
+        <button id="start-now" class="btn-primary">Start Now</button>
+      </div>
+      <div class="hero-image">
+        <img src="hero-illustration.svg" alt="Chatbot Illustration">
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <h2>Features</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <img src="feature-icon1.svg" alt="Icon">
+          <h3>Real-Time Responses</h3>
+          <p>Experience lightning-fast answers to your queries.</p>
+        </div>
+        <div class="feature">
+          <img src="feature-icon2.svg" alt="Icon">
+          <h3>Minimal Design</h3>
+          <p>Interact in a clean, distraction-free interface.</p>
+        </div>
+        <div class="feature">
+          <img src="feature-icon3.svg" alt="Icon">
+          <h3>24/7 Availability</h3>
+          <p>Always ready, no matter the time or place.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section id="chat-section" class="chat hidden">
+      <div class="chat-box">
+        <div class="chat-header">
+          <h4>ChatBot AI</h4>
+          <button id="close-chat" class="close-btn">×</button>
+        </div>
+        <div class="chat-window" id="chat-window"></div>
+        <div class="chat-input">
+          <input type="text" id="chat-input" placeholder="Type your message..." />
+          <button id="send-button">Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 ChatBot AI. Designed for simplicity.</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+#CSS
+/* styles.css */
+/* General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  color: #eaeaea;
+  background-color: #0d0d0d; /* Black background */
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
+.navbar .logo {
+  font-weight: 600;
+  font-size: 24px;
+  color: #eaeaea;
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #eaeaea;
+  font-weight: 500;
+}
+
+.navbar .btn-primary {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #4e8df5, #ff5da2); /* Neon gradient */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar .btn-primary:hover {
+  opacity: 0.8;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 40px;
+  color: #eaeaea;
+}
+
+.hero-content {
+  max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #4e8df5, #ff5da2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Neon text effect */
+}
+
+.hero-content p {
+  font-size: 18px;
+  color: #c4c4c4;
+  margin-bottom: 30px;
+}
+
+.hero-content .btn-primary {
+  padding: 12px 25px;
+  font-size: 16px;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(255, 93, 162, 0.5));
+}
+
+/* Features Section */
+.features {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+.features-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.feature {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(255, 93, 162, 0.5);
+}
+
+.feature img {
+  width: 60px;
+  margin-bottom: 20px;
+  filter: brightness(1.5);
+}
+
+.feature h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ff5da2;
+}
+
+.feature p {
+  color: #c4c4c4;
+  font-size: 14px;
+}
+
+/* Chat Section */
+.chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 350px;
+  width: 100%;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat.visible {
+  display: flex;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #4e8df5, #ff5da2);
+  color: #fff;
+  padding: 15px 20px;
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #0d0d0d;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #333;
+  background-color: #0d0d0d;
+  color: #eaeaea;
+  border-radius: 5px;
+}
+
+.chat-input input::placeholder {
+  color: #666;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #4e8df5, #ff5da2);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-input button:hover {
+  opacity: 0.8;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #eaeaea;
+}
+
+
+
+
+
+#JS
+
+// scripts.js
+const startChatBtn = document.getElementById('start-chat');
+const chatSection = document.getElementById('chat-section');
+const closeChatBtn = document.getElementById('close-chat');
+const sendButton = document.getElementById('send-button');
+const chatInput = document.getElementById('chat-input');
+const chatWindow = document.getElementById('chat-window');
+
+startChatBtn.addEventListener('click', () => {
+  chatSection.classList.add('visible');
+});
+
+closeChatBtn.addEventListener('click', () => {
+  chatSection.classList.remove('visible');
+});
+
+sendButton.addEventListener('click', () => {
+  const userMessage = chatInput.value.trim();
+  if (userMessage) {
+    const messageBubble = document.createElement('div');
+    messageBubble.textContent = userMessage;
+    messageBubble.style.marginBottom = '10px';
+    chatWindow.appendChild(messageBubble);
+    chatInput.value = '';
+  }
+});
