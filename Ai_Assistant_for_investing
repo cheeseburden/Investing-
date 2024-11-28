@@ -1,0 +1,101 @@
+pip install requests pyttsx3 groq
+
+import requests
+import pyttsx3
+from groq import Groq
+
+# Twelve Data API Configuration
+T12_API_KEY = "8e61cf1c3b1c4429bb3bba6593d2c5ab"
+T12_BASE_URL = "https://api.twelvedata.com"
+client = Groq(api_key="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")
+
+# Prompt for financial advisor
+base_prompt = """
+You are a financial advisor chatbot that provides personalized investment guidance.
+Collect the following information with user consent:
+
+- Financial goals (short-term or long-term).
+- Risk tolerance (low, medium, high).
+- Current investments and portfolio allocation.
+- Investment budget and time horizon.
+- Geographic preferences or restrictions.
+
+Your goal is to assist users in making informed financial decisions. When responding, focus on:
+- Understanding the user's financial goals, risk tolerance, and time horizon.
+- Providing tailored suggestions for investment strategies and asset allocation.
+- Educating users on financial concepts and explaining investment options in simple terms.
+- Highlighting the importance of diversification and risk management.
+
+Always respond in a clear, professional, and approachable tone. Avoid providing specific buy/sell advice for individual stocks or assets.
+"""
+
+# Text-to-Speech Function
+def text_to_speech(text):
+    """Convert text to speech using pyttsx3."""
+    try:
+        engine = pyttsx3.init()
+        engine.setProperty("rate", 150)
+        engine.setProperty("volume", 0.9)
+        engine.say(text)
+        engine.runAndWait()
+    except Exception as e:
+        print(f"Text-to-speech error: {e}")
+
+# Chatbot for Financial Guidance
+def financial_advisor_chat(user_input, conversation_history):
+    """
+    Handle the financial advisor chat logic.
+
+    Args:
+        user_input (str): The user's input.
+        conversation_history (list): Conversation history between user and assistant.
+
+    Returns:
+        str: AI-generated response.
+    """
+    # Add initial base prompt if starting new conversation
+    if not conversation_history:
+        conversation_history.append({"role": "system", "content": base_prompt})
+
+    # Add user input to conversation history
+    conversation_history.append({"role": "user", "content": user_input})
+
+    try:
+        # Send the conversation to the Groq API
+        response = client.chat.completions.create(
+            model="llama3-70b-8192",
+            messages=conversation_history,
+            temperature=1,
+            max_tokens=1024,
+            top_p=1,
+        )
+
+        # Extract the AI's response
+        ai_response = response.choices[0].message.content.strip()
+
+        # Add the AI response to the conversation history
+        conversation_history.append({"role": "assistant", "content": ai_response})
+
+        return ai_response
+    except Exception as e:
+        return f"Error: Unable to generate response. {e}"
+
+# Main Function
+if __name__ == "__main__":
+    print("Welcome to your financial investment assistant. How can I help you today?")
+
+    conversation_history = []
+
+    while True:
+        # Get user input
+        user_input = input("You: ").strip()
+        if user_input.lower() in ["quit", "break", "stop", "bye"]:
+            print("Goodbye! Best of luck with your financial journey.")
+            break
+
+        # Get response from chatbot
+        advisor_response = financial_advisor_chat(user_input, conversation_history)
+
+        # Display and optionally convert response to speech
+        print("Assistant:", advisor_response)
+        text_to_speech(advisor_response)
