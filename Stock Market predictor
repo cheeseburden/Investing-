@@ -1,0 +1,84 @@
+import yfinance as yf
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from keras.layers import Dense, LSTM, Dropout
+from keras.models import Sequential
+from sklearn.metrics import accuracy_score
+
+plt.style.use('fivethirtyeight')
+
+#Downloading the stock data
+stock = 'AAPL'
+df = yf.download(stock, start = '2012-01-01', end = "2024-10-17")
+
+#Plotting the close price of AMZN
+plt.figure(figsize = (12,8))
+plt.title(f'{stock} Stock price')
+plt.plot(df['Close'])
+plt.xlabel("Date")
+plt.ylabel("USD")
+plt.show()
+
+#Splitting the data into target and features
+df['Tomorrow'] = df['Close'].shift(-1)
+df['Target'] = (df['Tomorrow'] > df['Close']).astype(int)
+x = df.drop(['Target'], axis = 1)
+y = df.Target
+df
+
+#Scaling the data
+scaler = MinMaxScaler(feature_range=(0,1))
+x_scaled = scaler.fit_transform(x)
+
+
+x_train1 = []
+y_train1 = []
+timestep = 2
+for i in range(len(x_scaled)-timestep):
+  x_train1.append(x_scaled[i:i+timestep])
+  y_train1.append(y[i+timestep])
+
+x_train_arr = np.array(x_train1)
+y_train_arr = np.array(y_train1)
+x_train_arr.shape
+
+split = int(len(x_train_arr) * 0.8)
+x_train, x_test = x_train_arr[:split], x_train_arr[split:]
+y_train, y_test = y_train_arr[:split], y_train_arr[split:]
+x_test.shape
+
+#Creating an LSTM model
+model = Sequential()
+model.add(LSTM(50, return_sequences=True, input_shape = (x_train.shape[1], x_train.shape[2] )))
+model.add(Dropout(0.2))
+model.add(LSTM(50, return_sequences= False))
+model.add(Dropout(0.2))
+model.add(Dense(1))
+
+model.compile(optimizer ='adam', loss = 'mean_squared_error')
+
+#Training the LSTM model
+model.fit(x_train, y_train, epochs = 50, batch_size=128)
+y_pred = model.predict(x_test)
+y_pred_class = (y_pred>0.7).astype(int)
+accuracy = accuracy_score(y_test, y_pred_class)
+print(accuracy)
+
+y_pred_inv = scaler.inverse_transform(np.hstack((y_pred, np.zeros((y_pred.shape[0], x_scaled.shape[1] - 1)))))  # Add zeros for other features
+y_test_inv = scaler.inverse_transform(np.hstack((y_test1.reshape(-1, 1), np.zeros((y_test1.shape[0], x_scaled.shape[1] - 1)))))  # Add zeros for other features
+
+y_pred_prices = y_pred_inv[:, 0]
+y_test_prices = y_test_inv[:, 0]
+
+
+plt.figure(figsize=(14, 7))
+plt.plot(y_test_prices, label='Actual Prices', color='blue')
+plt.plot(y_pred_prices, label='Predicted Prices', color='red')
+plt.title('Actual vs Predicted Prices')
+plt.xlabel('Time Step')
+plt.ylabel('Price')
+plt.legend()
+plt.show()
